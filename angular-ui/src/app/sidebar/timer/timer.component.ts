@@ -54,6 +54,7 @@ export class TimerComponent implements OnInit {
 
   randomizeMovieSelection(movies: Movie[]) : Movie {
       let randomNum: number = Math.floor(Math.random()*movies.length);
+      console.log(movies[randomNum]);
       return movies[randomNum];
   }
   timer(minutes: number) {
