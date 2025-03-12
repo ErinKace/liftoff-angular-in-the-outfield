@@ -18,7 +18,7 @@ public class MovieRecController {
         this.movieService = movieService;
     }
 
-    @GetMapping()
+    @GetMapping("")
     public ResponseEntity<Flux<Movie>> getMovieRec() {
         Flux<Movie> movieList = movieService.getTrendingMovies();
         return ResponseEntity.status(HttpStatus.OK).body(movieList);
