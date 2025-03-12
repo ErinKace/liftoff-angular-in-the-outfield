@@ -2,6 +2,7 @@ package com.flickfinder.flickfinderbackend.controllers;
 
 import com.flickfinder.flickfinderbackend.models.Movie;
 import com.flickfinder.flickfinderbackend.services.MovieService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,8 @@ public class MovieRecController {
 
     @GetMapping()
     public ResponseEntity<Flux<Movie>> getMovieRec() {
+        Flux<Movie> movieList = movieService.getTrendingMovies();
+        return ResponseEntity.status(HttpStatus.OK).body(movieList);
 
     }
 }
