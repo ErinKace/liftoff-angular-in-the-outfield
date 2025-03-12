@@ -11,7 +11,9 @@ export class MoviesService {
   private apiUrl: string = 'https://api.themoviedb.org/3/';
   private apiKey!: string;
   private movieId: number = 626735;
+  private backendUrl = 'http://localhost:8080/'
   // getSelectedMovieId: any;
+
 
   constructor(private http: HttpClient, private apiKeyService: ApikeyService) {
     this.apiKeyService
@@ -21,6 +23,10 @@ export class MoviesService {
   randomIndexPicker(recommendedMovies: number[]): number {
     const randomIndex = Math.floor(Math.random() * recommendedMovies.length);
     return recommendedMovies[randomIndex];
+  }
+
+  fetchMovieRecs(): Observable<Movie[]> {
+    return this.http.get<Movie[]>(this.backendUrl+"rec");
   }
 
   fetchTrendingMoviesIds(): Observable<number[]> {

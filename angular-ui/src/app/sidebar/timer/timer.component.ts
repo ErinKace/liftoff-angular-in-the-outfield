@@ -1,4 +1,5 @@
 
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Movie } from 'src/app/shared/movie.model';
 import { MoviesService } from 'src/app/shared/movies.service';
@@ -15,23 +16,29 @@ export class TimerComponent implements OnInit {
   timerRunning: boolean = false;
   minutesInt: number = 5;
   countdownDisplay: string = "";
-
   randomMovie!: Movie;
-
   movieListOptions: Movie[] = [];
 
-  constructor(private moviesService: MoviesService) {}
+  constructor(private moviesService: MoviesService, private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.moviesService.fetchTrendingMoviesIds().subscribe((trendingMovies) => {
-      let movieIds: number[] = trendingMovies;
+    // this.moviesService.fetchTrendingMoviesIds().subscribe((trendingMovies) => {
+    //   let movieIds: number[] = trendingMovies;
 
-      this.moviesService
-        .fetchMovieListDetails(movieIds)
-        .subscribe((movieListDetails) => {
-          this.movieListOptions = movieListDetails;
-        });
+    //   this.moviesService
+    //     .fetchMovieListDetails(movieIds)
+    //     .subscribe((movieListDetails) => {
+    //       this.movieListOptions = movieListDetails;
+    //     });
+    // });
+    // this.moviesService.fetchMovieRecs().subscribe((movies)=> {
+    //   console.log(movies[0]);
+    //   this.movieListOptions = movies;
+    // })
+    this.http.get<Movie[]>('http://localhost:8080/api/trending').subscribe((movies)=> {
+      this.movieListOptions = movies;
     });
+
   }
 
   startTimer(minutes: string = "5") {
