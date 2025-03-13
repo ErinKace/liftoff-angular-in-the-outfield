@@ -31,13 +31,13 @@ export class TimerComponent implements OnInit {
     //       this.movieListOptions = movieListDetails;
     //     });
     // });
-    // this.moviesService.fetchMovieRecs().subscribe((movies)=> {
-    //   console.log(movies[0]);
-    //   this.movieListOptions = movies;
-    // })
-    this.http.get<Movie[]>('http://localhost:8080/api/trending').subscribe((movies)=> {
+    this.moviesService.fetchMovieRecs().subscribe((movies)=> {
+      console.log(movies);
       this.movieListOptions = movies;
-    });
+    })
+    // this.http.get<Movie[]>('http://localhost:8080/api/trending').subscribe((movies)=> {
+    //   this.movieListOptions = movies;
+    // });
 
   }
 

@@ -21,7 +21,7 @@ import { MoviesService } from '../../shared/movies.service';
 })
 export class RecommendationsComponent implements OnInit {
   private apiUrl: string = 'https://api.themoviedb.org/3/';
-  recommendedMovies: number[] = [];
+  recommendedMovies: Movie[] = [];
   movieId: number = 550;
   selectedMovie: Movie[] = [];
   currentMovieIndex: number = 0;
@@ -34,15 +34,18 @@ export class RecommendationsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.fetchRecommendedMoviesIds().subscribe((recommendedMovies) => {
-      this.recommendedMovies = recommendedMovies;
-      this.selectedMovie = [];
-      this.recommendedMovies.forEach((id) => {
-        this.movieService.fetchMovieListDetails([id]).subscribe((movies) => {
-          this.selectedMovie.push(movies[0]);
-        });
-      });
-    });
+    // this.fetchRecommendedMoviesIds().subscribe((recommendedMovies) => {
+    //   this.recommendedMovies = recommendedMovies;
+    //   this.selectedMovie = [];
+    //   this.recommendedMovies.forEach((id) => {
+    //     this.movieService.fetchMovieListDetails([id]).subscribe((movies) => {
+    //       this.selectedMovie.push(movies[0]);
+    //     });
+    //   });
+    // });
+    this.movieService.fetchMovieRecs().subscribe((movies)=> {
+      this.recommendedMovies = movies;
+    })
   }
 
   startSpin() {
@@ -58,21 +61,21 @@ export class RecommendationsComponent implements OnInit {
   }
 
   showNextMovie() {
-    this.currentMovieIndex = (this.currentMovieIndex + 1) % this.selectedMovie.length;
+    this.currentMovieIndex = (this.currentMovieIndex + 1) % this.recommendedMovies.length;
   }
 
-  fetchRecommendedMoviesIds(): Observable<number[]> {
-    return this.apiKeyService.getApiKey().pipe(
-      switchMap((apiKey) => {
-        const url = `${this.apiUrl}/movie/${this.movieId}/similar?language=en-US&api_key=${apiKey}&include_adult=false`;
-        return this.http.get<any>(url).pipe(
-          map((response) => response.results.map((movie: any) => movie.id)),
-          catchError((error) => {
-            console.error('Error fetching recommended movies:', error);
-            return of([]);
-          })
-        );
-      })
-    );
-  }
+  // fetchRecommendedMoviesIds(): Observable<number[]> {
+  //   return this.apiKeyService.getApiKey().pipe(
+  //     switchMap((apiKey) => {
+  //       const url = `${this.apiUrl}/movie/${this.movieId}/similar?language=en-US&api_key=${apiKey}&include_adult=false`;
+  //       return this.http.get<any>(url).pipe(
+  //         map((response) => response.results.map((movie: any) => movie.id)),
+  //         catchError((error) => {
+  //           console.error('Error fetching recommended movies:', error);
+  //           return of([]);
+  //         })
+  //       );
+  //     })
+  //   );
+  // }
 }
